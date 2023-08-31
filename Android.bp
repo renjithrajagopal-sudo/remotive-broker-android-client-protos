@@ -1,0 +1,144 @@
+/*
+ * Copyright 2023 Volvo Car Corporation
+*/
+
+genrule {
+    name: "network_api_proto_h",
+    tools: [
+        "aprotoc",
+        "protoc-gen-grpc-cpp-plugin",
+    ],
+    cmd: "$(location aprotoc) -I$$(dirname $(in)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
+    srcs: [
+        "protos/network_api.proto",
+    ],
+    out: [
+        "network_api.grpc.pb.h",
+        "network_api.pb.h",
+    ],
+}
+
+genrule {
+    name: "network_api_proto_cc",
+    tools: [
+        "aprotoc",
+        "protoc-gen-grpc-cpp-plugin",
+    ],
+    cmd: "$(location aprotoc) -I$$(dirname $(in)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
+    srcs: [
+        "protos/network_api.proto",
+    ],
+    out: [
+        "network_api.grpc.pb.cc",
+        "network_api.pb.cc",
+    ],
+}
+
+genrule {
+    name: "common_proto_h",
+    tools: [
+        "aprotoc",
+        "protoc-gen-grpc-cpp-plugin",
+    ],
+    cmd: "$(location aprotoc) -I$$(dirname $(in)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
+    srcs: [
+        "protos/common.proto",
+    ],
+    out: [
+        "common.grpc.pb.h",
+        "common.pb.h",
+    ],
+}
+
+genrule {
+    name: "common_proto_cc",
+    tools: [
+        "aprotoc",
+        "protoc-gen-grpc-cpp-plugin",
+    ],
+    cmd: "$(location aprotoc) -I$$(dirname $(in)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
+    srcs: [
+        "protos/common.proto",
+    ],
+    out: [
+        "common.grpc.pb.cc",
+        "common.pb.cc",
+    ],
+}
+
+genrule {
+    name: "system_api_proto_h",
+    tools: [
+        "aprotoc",
+        "protoc-gen-grpc-cpp-plugin",
+    ],
+    cmd: "$(location aprotoc) -I$$(dirname $(in)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
+    srcs: [
+        "protos/system_api.proto",
+    ],
+    out: [
+        "system_api.grpc.pb.h",
+        "system_api.pb.h",
+    ],
+}
+
+genrule {
+    name: "system_api_proto_cc",
+    tools: [
+        "aprotoc",
+        "protoc-gen-grpc-cpp-plugin",
+    ],
+    cmd: "$(location aprotoc) -I$$(dirname $(in)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
+    srcs: [
+        "protos/system_api.proto",
+    ],
+    out: [
+        "system_api.grpc.pb.cc",
+        "system_api.pb.cc",
+    ],
+}
+
+cc_library {
+    name: "libsignalbroker",
+    vendor: false,
+    vendor_available: true,
+
+    rtti: false,
+    tidy: false,
+
+    include_dirs: [
+        "external/protobuf/src",
+    ],
+
+    generated_sources: [
+        "network_api_proto_cc",
+        "common_proto_cc",
+        "system_api_proto_cc",
+    ],
+
+    generated_headers: [
+        "network_api_proto_h",
+        "common_proto_h",
+        "system_api_proto_h",
+    ],
+
+    export_generated_headers: [
+        "network_api_proto_h",
+        "common_proto_h",
+        "system_api_proto_h",
+    ],
+
+    shared_libs: [
+        "libgrpc++",
+        "libprotobuf-cpp-full",
+    ],
+
+    cflags: [
+        "-Wno-unused-parameter",
+        "-DGOOGLE_PROTOBUF_NO_RTTI=1",
+    ],
+
+    tidy_checks: [
+        "-clang-analyzer-optin.cplusplus.UninitializedObject",
+    ],
+}
