@@ -8,9 +8,11 @@ genrule {
         "aprotoc",
         "protoc-gen-grpc-cpp-plugin",
     ],
-    cmd: "$(location aprotoc) -I$$(dirname $(in)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
+
+    cmd: "$(location aprotoc) -I$$(dirname $(location protos/network_api.proto)) -Iexternal/protobuf/src  --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
     srcs: [
         "protos/network_api.proto",
+        "protos/common.proto",
     ],
     out: [
         "network_api.grpc.pb.h",
@@ -24,9 +26,15 @@ genrule {
         "aprotoc",
         "protoc-gen-grpc-cpp-plugin",
     ],
-    cmd: "$(location aprotoc) -I$$(dirname $(in)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
+
+    tool_files: [
+       
+    ],
+
+    cmd: "$(location aprotoc) -I$$(dirname $(location protos/network_api.proto)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
     srcs: [
         "protos/network_api.proto",
+        "protos/common.proto",
     ],
     out: [
         "network_api.grpc.pb.cc",
@@ -40,7 +48,8 @@ genrule {
         "aprotoc",
         "protoc-gen-grpc-cpp-plugin",
     ],
-    cmd: "$(location aprotoc) -I$$(dirname $(in)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
+    
+    cmd: "$(location aprotoc) -I$$(dirname $(location protos/common.proto)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
     srcs: [
         "protos/common.proto",
     ],
@@ -56,7 +65,7 @@ genrule {
         "aprotoc",
         "protoc-gen-grpc-cpp-plugin",
     ],
-    cmd: "$(location aprotoc) -I$$(dirname $(in)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
+    cmd: "$(location aprotoc) -I$$(dirname $(location protos/common.proto)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
     srcs: [
         "protos/common.proto",
     ],
@@ -72,9 +81,11 @@ genrule {
         "aprotoc",
         "protoc-gen-grpc-cpp-plugin",
     ],
-    cmd: "$(location aprotoc) -I$$(dirname $(in)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
+
+    cmd: "$(location aprotoc) -I$$(dirname $(location protos/system_api.proto)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
     srcs: [
         "protos/system_api.proto",
+        "protos/common.proto",
     ],
     out: [
         "system_api.grpc.pb.h",
@@ -88,9 +99,15 @@ genrule {
         "aprotoc",
         "protoc-gen-grpc-cpp-plugin",
     ],
-    cmd: "$(location aprotoc) -I$$(dirname $(in)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
+
+    tool_files: [
+       
+    ],
+
+    cmd: "$(location aprotoc) -I$$(dirname $(location protos/system_api.proto)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
     srcs: [
         "protos/system_api.proto",
+        "protos/common.proto",
     ],
     out: [
         "system_api.grpc.pb.cc",
@@ -98,10 +115,11 @@ genrule {
     ],
 }
 
-cc_library {
+cc_library_static {
     name: "libsignalbroker",
-    vendor: false,
-    vendor_available: true,
+    vendor: true,
+    host_supported: true,
+    //vendor_available: true,
 
     rtti: false,
     tidy: false,
