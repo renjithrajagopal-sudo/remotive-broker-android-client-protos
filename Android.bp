@@ -27,10 +27,6 @@ genrule {
         "protoc-gen-grpc-cpp-plugin",
     ],
 
-    tool_files: [
-       
-    ],
-
     cmd: "$(location aprotoc) -I$$(dirname $(location protos/network_api.proto)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
     srcs: [
         "protos/network_api.proto",
@@ -100,10 +96,6 @@ genrule {
         "protoc-gen-grpc-cpp-plugin",
     ],
 
-    tool_files: [
-       
-    ],
-
     cmd: "$(location aprotoc) -I$$(dirname $(location protos/system_api.proto)) -Iexternal/protobuf/src --plugin=protoc-gen-grpc=$(location protoc-gen-grpc-cpp-plugin) $(in) --grpc_out=$(genDir) --cpp_out=$(genDir)",
     srcs: [
         "protos/system_api.proto",
@@ -119,7 +111,6 @@ cc_library_static {
     name: "libsignalbroker",
     vendor: true,
     host_supported: true,
-    //vendor_available: true,
 
     rtti: false,
     tidy: false,
